@@ -160,6 +160,7 @@ config PINCTRL_TEGRA124
 
 config PINCTRL_TEGRA_XUSB
 	def_bool y if ARCH_TEGRA
+	depends on MAILBOX
 	select GENERIC_PHY
 	select PINCONF
 	select PINMUX
