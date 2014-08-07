@@ -1,0 +1,48 @@
+MIPS Global Interrupt Controller (GIC)
+
+The MIPS GIC routes external interrupts to individual VPEs and IRQ pins.
+It also supports local (per-processor) interrupts and software-generated
+interrupts which can be used as IPIs.  The GIC also includes a free-running
+global timer, per-CPU count/compare timers, and a watchdog.
+
+Required properties:
+- compatible : Should be "mti,global-interrupt-controller"
+- reg : Base address and length of the GIC registers.
+- interrupt-controller : Identifies the node as an interrupt controller
+- #interrupt-cells : Specifies the number of cells needed to encode an
+  interrupt specifier.  Should be 3.
+  - The first cell is the type of interrupt, local or shared.
+    See <include/dt-bindings/interrupt-controller/mips-gic.h>.
+  - The second cell is the GIC interrupt number.
+  - The third cell encodes the interrupt flags.
+    See <include/dt-bindings/interrupt-controller/irq.h> for a list of valid
+    flags.
+- mti,available-cpu-vectors : Specifies the list of CPU interrupt vectors
+  to which the GIC may route interrupts.  May contain up to 6 entries, one
+  for each of the CPU's hardware interrupt vectors.  Valid values are 2 - 7.
+
+Additional required properties for clocksource/timer:
+- interrupt : Interrupt for the GIC Local (per-CPU) timer.
+- clock-frequency : Clock frequency at which the GIC timers operate.
+
+Example:
+
+	gic: interrupt-controller@1bdc0000 {
+		compatible = "mti,global-interrupt-controller";
+		reg = <0x1bdc0000 0x20000>;
+
+		interrupt-controller;
+		#interrupt-cells = <2>;
+
+		mti,available-cpu-vectors = <2>, <3>, <4>, <5>;
+
+		interrupts = <GIC_LOCAL 1 IRQ_TYPE_NONE>;
+		clock-frequency = <50000000>;
+	};
+
+	uart@18101400 {
+		...
+		interrupt-parent = <&gic>;
+		interrupts = <GIC_SHARED 24 IRQ_TYPE_LEVEL_HIGH>;
+		...
+	};
