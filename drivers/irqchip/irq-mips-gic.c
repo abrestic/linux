@@ -20,7 +20,6 @@
 
 #include "irq-mips-gic.h"
 
-unsigned int gic_frequency;
 unsigned int gic_present;
 
 struct gic_pcpu_mask {
