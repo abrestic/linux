@@ -21,6 +21,8 @@
 #include <linux/hardirq.h>
 #include <asm-generic/bitops/find.h>
 
+#include "irq-mips-gic.h"
+
 unsigned int gic_frequency;
 unsigned int gic_present;
 
