@@ -23,6 +23,7 @@ platforms += netlogic
 platforms += paravirt
 platforms += pmcs-msp71xx
 platforms += pnx833x
+platforms += pistachio
 platforms += ralink
 platforms += rb532
 platforms += sgi-ip22
