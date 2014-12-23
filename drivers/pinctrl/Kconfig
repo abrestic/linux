@@ -126,6 +126,12 @@ config PINCTRL_SIRF
 	select PINMUX
 	select GPIOLIB_IRQCHIP
 
+config PINCTRL_PISTACHIO
+	def_bool y if MACH_PISTACHIO
+	select PINMUX
+	select GENERIC_PINCONF
+	select GPIOLIB_IRQCHIP
+
 config PINCTRL_ST
 	bool
 	depends on OF
