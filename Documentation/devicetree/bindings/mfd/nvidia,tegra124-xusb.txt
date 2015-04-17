@@ -1,0 +1,46 @@
+NVIDIA Tegra XUSB host copmlex
+==============================
+
+The XUSB host complex on Tegra124 and later SoCs contains an xHCI host
+controller and a mailbox for communication with the XUSB micro-controller.
+
+Required properties:
+--------------------
+ - compatible: For Tegra124, must contain "nvidia,tegra124-xusb".
+   Otherwise, must contain '"nvidia,<chip>-xusb", "nvidia,tegra124-xusb"'
+   where <chip> is tegra132.
+ - reg: Must contain register base and length for each register set listed
+   in reg-names.
+ - reg-names: Must include the following entries:
+   - xhci
+   - fpci
+   - ipfs
+ - interrupts: Must contain an interrupt for each entry in interrupt-names.
+ - interrupt-names: Must include the following entries:
+   - host
+   - smi
+   - pme
+
+Example:
+--------
+	usb@0,70090000 {
+		compatible = "nvidia,tegra124-xusb";
+		reg = <0x0 0x70090000 0x0 0x8000>,
+		      <0x0 0x70098000 0x0 0x1000>,
+		      <0x0 0x70099000 0x0 0x1000>;
+		reg-names = "xhci", "fpci", "ipfs";
+		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>,
+			     <GIC_SPI 40 IRQ_TYPE_LEVEL_HGIH>,
+			     <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+		interrupt-names = "host", "smi", "pme";
+
+		usb-host {
+			compatible = "nvidia,tegra124-xhci";
+			...
+		};
+
+		mailbox {
+			compatible = "nvidia,tegra124-xusb-mbox";
+			...
+		};
+	};
